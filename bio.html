@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RMN FPV — Bio & Kontakt</title>
+<meta name="description" content="Roman Scholz — Zertifizierter FPV-Drohnenpilot aus Wuppertal. Drone experience seit 2013.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0c0a08;--void-2:#110d09;--panel:#17130f;--panel-2:#211a14;
+  --hud:#cf9a52;--hud-dim:rgba(207,154,82,.38);--hud-faint:rgba(207,154,82,.12);
+  --teal:#5f9c93;--amber:#e2483b;--ink:#f1ebe0;--ink-dim:#9a9186;
+  --line:rgba(207,154,82,.16);--radius:2px;--maxw:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--hud);display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;}
+.eyebrow::before{content:"[";color:var(--hud-dim);}
+.eyebrow::after{content:"]";color:var(--hud-dim);}
+
+/* NAV — same as index */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:background .35s,padding .35s,border-color .35s;border-bottom:1px solid transparent;}
+.nav.scrolled{background:rgba(10,13,12,.92);backdrop-filter:blur(10px);padding:12px 0;border-bottom:1px solid var(--line);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.logo{display:inline-flex;align-items:center;transition:opacity .2s;}
+.logo:hover{opacity:.8;}
+.logo img{height:36px;width:auto;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-size:13.5px;color:var(--ink-dim);transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-links a.active{color:var(--ink);}
+.nav-cta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--hud)!important;border:1px solid var(--hud-dim);padding:8px 14px;border-radius:var(--radius);transition:background .2s;}
+.nav-cta:hover{background:var(--hud-faint);}
+.nav-social{display:flex;gap:12px;align-items:center;}
+.nav-social a{opacity:.65;transition:opacity .2s;}
+.nav-social a:hover{opacity:1;}
+.lang-toggle{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-left:6px;}
+.lang-toggle a{color:var(--ink-dim);transition:color .2s;}
+.lang-toggle a:hover{color:var(--ink);}
+.lang-toggle a.lang-active{color:var(--hud);pointer-events:none;}
+.lang-toggle span{color:var(--line);}
+.nav-toggle{display:none;flex-direction:column;gap:5px;padding:4px;width:32px;}
+.nav-toggle span{display:block;height:2px;background:var(--ink);transition:transform .25s,opacity .25s;}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-panel{display:none;position:fixed;inset:0;background:var(--void);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:28px;}
+.mobile-panel.open{display:flex;}
+.mobile-panel a{font-family:'Big Shoulders Display';font-size:30px;font-weight:700;}
+@media(max-width:900px){.nav-links,.nav-social{display:none;}.nav-toggle{display:flex;}}
+
+/* BIO HERO */
+.bio-hero{position:relative;height:70vh;min-height:480px;display:flex;align-items:flex-end;overflow:hidden;}
+.bio-hero-media{position:absolute;inset:0;}
+.bio-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:saturate(.75) brightness(.65) sepia(.06);}
+.bio-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,10,8,.15) 0%,rgba(12,10,8,.3) 40%,rgba(12,10,8,.88) 100%);}
+.bio-hero-content{position:relative;z-index:2;padding:0 0 64px;width:100%;}
+.bio-hero-title{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:clamp(52px,8vw,90px);line-height:.96;text-transform:uppercase;letter-spacing:-.01em;}
+.bio-hero-title .accent{color:var(--hud);}
+.bio-hero-sub{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;color:var(--hud-dim);}
+
+/* BIO CONTENT */
+.bio-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:start;padding:100px 0;}
+.bio-photo-wrap{position:relative;}
+.bio-photo{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);}
+.bio-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center 25%;}
+.bio-photo-badge{position:absolute;bottom:20px;left:20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.09em;color:var(--ink);background:rgba(12,10,8,.8);padding:8px 14px;border:1px solid var(--hud-dim);border-radius:var(--radius);}
+.bio-text .eyebrow{margin-bottom:10px;}
+.bio-text h2{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(32px,4vw,48px);text-transform:uppercase;line-height:1.06;margin-bottom:28px;}
+.bio-text h2 .accent{color:var(--hud);}
+.bio-text p{color:var(--ink-dim);font-size:16px;margin-bottom:18px;max-width:560px;}
+.bio-text p:last-of-type{margin-bottom:0;}
+@media(max-width:800px){.bio-grid{grid-template-columns:1fr;gap:40px;}.bio-photo img{aspect-ratio:16/9;}}
+
+/* IMAGE BAND */
+.image-band{height:420px;overflow:hidden;position:relative;}
+.image-band img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.84);transition:transform .6s ease,filter .6s ease;}
+.image-band:hover img{transform:scale(1.04);filter:saturate(.98) brightness(.92);}
+@media(max-width:860px){.image-band{height:300px;}}
+@media(max-width:560px){.image-band{height:220px;}}
+
+/* STATS */
+.stats{background:var(--void-2);padding:72px 0;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);}
+.stat-card{background:var(--void-2);padding:36px 28px;text-align:center;}
+.stat-number{font-family:'Big Shoulders Display';font-weight:800;font-size:clamp(22px,3.2vw,32px);color:var(--hud);line-height:1.15;}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-dim);margin-top:10px;}
+@media(max-width:700px){.stats-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:420px){.stats-grid{grid-template-columns:1fr;}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* CONTACT — same as index */
+section{padding:100px 0;position:relative;}
+.section-alt{background:var(--void-2);}
+.section-title{font-family:'Big Shoulders Display',sans-serif;font-weight:700;font-size:clamp(28px,4vw,50px);line-height:1.06;text-transform:uppercase;}
+.section-title .accent{color:var(--hud);}
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;}
+.contact-row{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);}
+.contact-row:first-of-type{border-top:1px solid var(--line);}
+.contact-label{font-family:'JetBrains Mono';font-size:11px;color:var(--hud);letter-spacing:.08em;min-width:86px;padding-top:2px;}
+.contact-value{font-size:15.5px;}
+.contact-value a:hover{color:var(--hud);}
+.contact-social{display:flex;gap:12px;margin-top:26px;}
+.icon-btn{width:40px;height:40px;border:1px solid var(--line);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;transition:border-color .25s,transform .25s;}
+.icon-btn:hover{border-color:var(--hud-dim);transform:translateY(-2px);}
+.form-row{margin-bottom:18px;}
+.form-row label{display:block;font-family:'JetBrains Mono';font-size:11px;color:var(--ink-dim);letter-spacing:.08em;margin-bottom:8px;}
+.form-row input,.form-row textarea{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;color:var(--ink);font-family:'Inter';font-size:14.5px;transition:border-color .2s;}
+.form-row input:focus,.form-row textarea:focus{border-color:var(--hud-dim);outline:none;}
+.form-row textarea{resize:vertical;min-height:110px;}
+.form-status{margin-top:14px;font-family:'JetBrains Mono';font-size:12px;color:var(--hud);}
+.btn{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.04em;padding:14px 24px;border-radius:var(--radius);display:inline-flex;align-items:center;gap:9px;transition:transform .2s,background .2s;}
+.btn-primary{background:var(--hud);color:#0a0d0c;}
+.btn-primary:hover{transform:translateY(-2px);}
+@media(max-width:820px){.contact-grid{grid-template-columns:1fr;gap:44px;}}
+
+/* FOOTER */
+footer{background:var(--void-2);border-top:1px solid var(--line);padding:44px 0 30px;}
+.footer-inner{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;}
+.footer-meta{font-family:'JetBrains Mono';font-size:11px;color:var(--ink-dim);margin-top:8px;}
+.footer-links{display:flex;gap:22px;}
+.footer-links a{font-size:13px;color:var(--ink-dim);}
+.footer-links a:hover{color:var(--hud);}
+@media(max-width:540px){.wrap{padding:0 18px;}section{padding:72px 0;}}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo"><img src="assets/logo.png" alt="RMN FPV"></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#leistungen">Leistungen</a></li>
+      <li><a href="index.html#portfolio">Portfolio</a></li>
+      <li><a href="drones.html">Drones</a></li>
+      <li><a href="bio.html" class="active">Bio</a></li>
+      <li><a href="bio.html#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+    <div class="nav-social">
+      <a href="https://www.youtube.com/channel/UC3Qrd9u9lAbTPDA0zUDy2mA" aria-label="YouTube" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21.6 7.2s-.2-1.5-.8-2.1c-.8-.8-1.7-.8-2.1-.9C15.9 4 12 4 12 4s-3.9 0-6.7.2c-.4 0-1.3.1-2.1.9-.6.6-.8 2.1-.8 2.1S2.2 9 2.2 10.8v1.4C2.2 14 2.4 15.8 2.4 15.8s.2 1.5.8 2.1c.8.8 1.8.8 2.3.9 1.7.2 6.5.2 6.5.2s3.9 0 6.7-.2c.4 0 1.3-.1 2.1-.9.6-.6.8-2.1.8-2.1s.2-1.8.2-3.6v-1.4c0-1.8-.2-3.6-.2-3.6z" stroke="currentColor" stroke-width="1.2"/><path d="M10 9.5l4.5 2.5-4.5 2.5v-5z" fill="currentColor"/></svg>
+      </a>
+      <a href="https://www.instagram.com/rmn_fpv/" aria-label="Instagram" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.2"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
+      </a>
+    <div class="lang-toggle"><a href="#" class="lang-active">DE</a><span>/</span><a href="bio-en.html">EN</a></div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="index.html">Home</a>
+  <a href="index.html#portfolio">Portfolio</a>
+  <a href="drones.html">Drones</a>
+  <a href="bio.html">Bio</a>
+  <a href="bio.html#kontakt">Kontakt</a>
+  <a href="bio-en.html">EN</a>
+</div>
+
+<main>
+
+<!-- BIO HERO -->
+<section class="bio-hero">
+  <div class="bio-hero-media">
+    <img src="assets/bio-hero.jpg" alt="Roman Scholz — FPV Drohnenpilot">
+  </div>
+  <div class="bio-hero-overlay"></div>
+  <div class="bio-hero-content wrap">
+    <div class="eyebrow">BIO & KONTAKT</div>
+    <h1 class="bio-hero-title">Roman <span class="accent">Scholz</span></h1>
+    <p class="bio-hero-sub">ZERTIFIZIERTER DROHNENPILOT · WUPPERTAL / FRANKFURT · SEIT 2013</p>
+  </div>
+</section>
+
+<!-- BIO CONTENT -->
+<div class="wrap bio-grid">
+  <div class="bio-photo-wrap reveal">
+    <div class="bio-photo">
+      <img src="assets/bio-portrait.jpg" alt="Roman Scholz mit FPV-Drohne">
+    </div>
+    <div class="bio-photo-badge">FPV PILOT SEIT 2013</div>
+  </div>
+  <div class="bio-text reveal">
+    <div class="eyebrow">ÜBER MICH</div>
+    <h2>Pilot. Kreativer. <span class="accent">Storyteller.</span></h2>
+    <p>Mein Name ist Roman Scholz — ich bin zertifizierter Drohnenpilot aus Wuppertal und seit 2013 in der Luft. Was als Leidenschaft für Technik und Bewegtbild begann, hat sich zu einem professionellen Handwerk entwickelt, das Kunden wie Canyon Bicycles, Siemens und Mercedes-Benz begeistert.</p>
+    <p>FPV ist für mich mehr als Speed: Es geht um Präzision, Timing und die Fähigkeit, eine Geschichte durch Bewegung zu erzählen. Jede Kurve, jeder Durchflug, jede Perspektive ist bewusst gewählt — um das Publikum zu fesseln und das Gezeigte in einem völlig neuen Licht erscheinen zu lassen.</p>
+    <p>Neben klassischen Außenaufnahmen spezialisiere ich mich auf Cine-FPV — schwere Kamerasysteme, die auf einem hochstabilen FPV-Rahmen montiert sind und kinoreife Qualität mit der Dynamik des FPV-Fliegens verbinden.</p>
+    <p>Ich bin überwiegend deutschlandweit tätig. Für größere Projekte bin ich auch international einsatzbereit.</p>
+    <div style="margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;">
+      <a href="bio.html#kontakt" class="btn btn-primary">Kontakt aufnehmen</a>
+      <a href="index.html#portfolio" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.04em;padding:14px 24px;border-radius:var(--radius);border:1px solid var(--line);color:var(--ink);display:inline-flex;align-items:center;gap:9px;transition:border-color .2s,color .2s;" onmouseover="this.style.borderColor='var(--hud-dim)';this.style.color='var(--hud)';" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--ink)';">Portfolio ansehen</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-number">2013</div>
+        <div class="stat-label">FLIEGT SEIT</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">Cine FPV</div>
+        <div class="stat-label">SPEZIALISIERUNG</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">In- & Outdoor</div>
+        <div class="stat-label">EINSATZBEREICHE</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">DE</div>
+        <div class="stat-label">BUNDESWEIT VERFÜGBAR</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE BAND -->
+<div class="image-band">
+  <img src="assets/castle-fog-hilltop.jpg" alt="Burg im Nebel auf einem Hügel" loading="lazy">
+</div>
+
+<!-- CONTACT -->
+<section id="kontakt" class="section-alt">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <div class="eyebrow">KONTAKT</div>
+      <h2 class="section-title" style="margin-bottom:26px;">Bereit für eine neue <span class="accent">Perspektive</span>?</h2>
+      <div class="contact-row">
+        <div class="contact-label">ADRESSE</div>
+        <div class="contact-value">Böhler Hof 1<br>42119 Wuppertal</div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">E-MAIL</div>
+        <div class="contact-value"><a href="mailto:rmn.fpv@gmail.com">rmn.fpv@gmail.com</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">TELEFON</div>
+        <div class="contact-value"><a href="tel:+4916094729483">+49 160 94729483</a></div>
+      </div>
+      <div class="contact-social">
+        <a class="icon-btn" href="https://www.youtube.com/channel/UC3Qrd9u9lAbTPDA0zUDy2mA" aria-label="YouTube" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21.6 7.2s-.2-1.5-.8-2.1c-.8-.8-1.7-.8-2.1-.9C15.9 4 12 4 12 4s-3.9 0-6.7.2c-.4 0-1.3.1-2.1.9-.6.6-.8 2.1-.8 2.1S2.2 9 2.2 10.8v1.4C2.2 14 2.4 15.8 2.4 15.8s.2 1.5.8 2.1c.8.8 1.8.8 2.3.9 1.7.2 6.5.2 6.5.2s3.9 0 6.7-.2c.4 0 1.3-.1 2.1-.9.6-.6.8-2.1.8-2.1s.2-1.8.2-3.6v-1.4c0-1.8-.2-3.6-.2-3.6z" stroke="currentColor" stroke-width="1.2"/><path d="M10 9.5l4.5 2.5-4.5 2.5v-5z" fill="currentColor"/></svg>
+        </a>
+        <a class="icon-btn" href="https://www.instagram.com/rmn_fpv/" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.2"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <form id="bioContactForm">
+        <div class="form-row"><label for="bname">NAME</label><input type="text" id="bname" required></div>
+        <div class="form-row"><label for="bemail">E-MAIL</label><input type="email" id="bemail" required></div>
+        <div class="form-row"><label for="bmsg">NACHRICHT</label><textarea id="bmsg" required></textarea></div>
+        <button type="submit" class="btn btn-primary">Absenden</button>
+        <div class="form-status" id="bioStatus"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <a href="index.html" class="logo"><img src="assets/logo.png" alt="RMN FPV"></a>
+      <div class="footer-meta">Böhler Hof 1, 42119 Wuppertal · rmn.fpv@gmail.com</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="index.html#leistungen">Leistungen</a></li>
+      <li><a href="index.html#portfolio">Portfolio</a></li>
+      <li><a href="drones.html">Drones</a></li>
+      <li><a href="bio.html">Bio</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="bio.html#kontakt">Kontakt</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30));
+const tog = document.getElementById('navToggle');
+const mob = document.getElementById('mobilePanel');
+tog.addEventListener('click', () => {
+  const o = tog.classList.toggle('open');
+  mob.classList.toggle('open', o);
+  tog.setAttribute('aria-expanded', o);
+});
+mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  tog.classList.remove('open'); mob.classList.remove('open');
+}));
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('in'); }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+document.getElementById('bioContactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const n = document.getElementById('bname').value;
+  const em = document.getElementById('bemail').value;
+  const m = document.getElementById('bmsg').value;
+  window.location.href = 'mailto:rmn.fpv@gmail.com?subject=' + encodeURIComponent('Anfrage von ' + n) + '&body=' + encodeURIComponent(m + '\n\n— ' + n + ' (' + em + ')');
+  document.getElementById('bioStatus').textContent = 'Ihr E-Mail-Programm wird geöffnet — vielen Dank!';
+});
+</script>
+</body>
+</html>
