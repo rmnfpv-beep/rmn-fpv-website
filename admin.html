@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog-Editor | RMN FPV</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0c0a08;--void-2:#110d09;--panel:#17130f;--panel-2:#211a14;
+  --hud:#cf9a52;--hud-dim:rgba(207,154,82,.38);--hud-faint:rgba(207,154,82,.12);
+  --teal:#5f9c93;--amber:#e2483b;--ink:#f1ebe0;--ink-dim:#9a9186;
+  --line:rgba(207,154,82,.16);--radius:2px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--void);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;}
+input,textarea{font-family:inherit;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:var(--radius);padding:11px 13px;font-size:14px;width:100%;transition:border-color .2s;}
+input:focus,textarea:focus{outline:none;border-color:var(--hud-dim);}
+textarea{resize:vertical;min-height:110px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.65;}
+label{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--hud);margin-bottom:7px;}
+.field{margin-bottom:20px;}
+.hint{font-size:12px;color:var(--ink-dim);margin-top:6px;}
+.wrap{max-width:720px;margin:0 auto;padding:60px 24px 100px;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--hud);display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;}
+.eyebrow::before{content:"[";color:var(--hud-dim);}.eyebrow::after{content:"]";color:var(--hud-dim);}
+h1{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(28px,4vw,40px);text-transform:uppercase;margin-bottom:8px;}
+.sub{color:var(--ink-dim);margin-bottom:36px;font-size:14px;}
+.btn{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.04em;padding:13px 24px;background:var(--hud);color:#0a0d0c;border-radius:var(--radius);transition:transform .15s,opacity .2s;display:inline-flex;align-items:center;gap:8px;}
+.btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:.5;pointer-events:none;}
+.btn-ghost{background:none;border:1px solid var(--line);color:var(--ink-dim);}
+.btn-ghost:hover{border-color:var(--hud-dim);color:var(--ink);}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:28px;margin-bottom:24px;}
+.panel h2{font-family:'Big Shoulders Display',sans-serif;font-size:19px;text-transform:uppercase;margin-bottom:16px;letter-spacing:.02em;}
+.status{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:12px 14px;border-radius:var(--radius);display:none;}
+.status.show{display:block;}
+.status.ok{background:rgba(95,156,147,.12);border:1px solid rgba(95,156,147,.4);color:var(--teal);}
+.status.err{background:rgba(226,72,59,.1);border:1px solid rgba(226,72,59,.4);color:var(--amber);}
+.status.pending{background:var(--hud-faint);border:1px solid var(--hud-dim);color:var(--hud);}
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.gate-box{max-width:360px;width:100%;text-align:center;}
+.gate-box input{text-align:center;letter-spacing:.1em;margin-bottom:16px;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px;flex-wrap:wrap;gap:12px;}
+.top-bar a{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-dim);}
+.top-bar a:hover{color:var(--hud);}
+.toggle-details{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-dim);cursor:pointer;margin-bottom:14px;display:inline-block;}
+.toggle-details:hover{color:var(--hud);}
+.details-block{display:none;}
+.details-block.show{display:block;}
+.preview-img{max-width:160px;border-radius:var(--radius);margin-top:10px;border:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="eyebrow" style="justify-content:center;">RMN FPV</div>
+    <h1 id="gateTitle">Blog-Editor</h1>
+    <p class="sub" id="gateSub">Bitte Passwort eingeben.</p>
+    <input type="password" id="gatePw" placeholder="Passwort" autocomplete="current-password">
+    <button class="btn" id="gateBtn" style="width:100%;justify-content:center;">Anmelden</button>
+    <div class="status" id="gateStatus"></div>
+  </div>
+</div>
+
+<!-- EDITOR (hidden until unlocked) -->
+<div class="wrap" id="editorWrap" style="display:none;">
+  <div class="top-bar">
+    <div>
+      <div class="eyebrow">BLOG-EDITOR</div>
+      <h1 style="font-size:28px;">Neuer Beitrag</h1>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a href="blog.html" target="_blank">Blog ansehen ↗</a>
+      <a href="#" id="logoutBtn">Abmelden</a>
+    </div>
+  </div>
+
+  <!-- GITHUB SETUP -->
+  <div class="panel">
+    <h2>GitHub-Zugang</h2>
+    <span class="toggle-details" id="ghToggle">Zugangsdaten anzeigen / bearbeiten ▾</span>
+    <div class="details-block" id="ghDetails">
+      <div class="field">
+        <label>GITHUB-BENUTZERNAME</label>
+        <input type="text" id="ghUser" placeholder="z. B. romanscholz21">
+      </div>
+      <div class="field">
+        <label>REPOSITORY-NAME</label>
+        <input type="text" id="ghRepo" placeholder="z. B. rmnfpv-website">
+      </div>
+      <div class="field">
+        <label>BRANCH</label>
+        <input type="text" id="ghBranch" placeholder="main" value="main">
+      </div>
+      <div class="field">
+        <label>ACCESS TOKEN</label>
+        <input type="password" id="ghToken" placeholder="github_pat_...">
+        <p class="hint">Fine-grained Token unter github.com → Settings → Developer settings → Personal access tokens. Nur für dieses eine Repository, Berechtigung "Contents: Read and write". Wird nur in diesem Browser gespeichert.</p>
+      </div>
+      <button class="btn btn-ghost" id="saveGhBtn">Zugangsdaten speichern</button>
+      <div class="status" id="ghStatus"></div>
+    </div>
+  </div>
+
+  <!-- POST FORM -->
+  <div class="panel">
+    <h2>Beitrag verfassen</h2>
+    <div class="field">
+      <label>TITEL</label>
+      <input type="text" id="postTitle" placeholder="Titel des Blogbeitrags">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>DATUM</label>
+        <input type="date" id="postDate">
+      </div>
+      <div class="field">
+        <label>SLUG (URL) — automatisch</label>
+        <input type="text" id="postSlug" placeholder="wird automatisch erzeugt">
+      </div>
+    </div>
+    <div class="field">
+      <label>KURZBESCHREIBUNG (erscheint in der Blog-Übersicht)</label>
+      <textarea id="postExcerpt" style="min-height:70px;font-family:'Inter',sans-serif;font-size:14px;" placeholder="1–2 Sätze, die den Beitrag zusammenfassen"></textarea>
+    </div>
+    <div class="field">
+      <label>TITELBILD</label>
+      <input type="file" id="postImageFile" accept="image/*">
+      <p class="hint">Wird beim Veröffentlichen automatisch mit hochgeladen. Alternativ: Pfad zu einem bereits vorhandenen Bild im assets-Ordner eintragen.</p>
+      <input type="text" id="postImagePath" placeholder="z. B. assets/mein-bild.jpg" style="margin-top:8px;">
+      <img id="imgPreview" class="preview-img" style="display:none;">
+    </div>
+    <div class="field">
+      <label>INHALT</label>
+      <textarea id="postContent" style="min-height:320px;" placeholder="Schreiben Sie hier Ihren Beitrag.
+
+Ein Absatz — einfach eine Leerzeile lassen, dann folgt automatisch ein neuer Absatz.
+
+## Eine Zwischenüberschrift so schreiben
+
+> Ein Zitat so beginnen
+
+**fett** und *kursiv* funktionieren auch."></textarea>
+      <p class="hint">Einfache Formatierung: Leerzeile = neuer Absatz · "## Text" = Überschrift · "&gt; Text" = Zitat · **fett** · *kursiv*</p>
+    </div>
+    <button class="btn" id="publishBtn">Veröffentlichen</button>
+    <div class="status" id="publishStatus"></div>
+  </div>
+</div>
+
+<script>
+/* ============ PASSWORD GATE (local device convenience lock) ============
+   This does NOT protect the GitHub token itself — it only prevents casual
+   access on this device/browser. The actual publish permission comes from
+   the GitHub token entered below, which is the real security boundary. */
+const LS_PW_HASH = 'rmnfpv_admin_pw_hash';
+const LS_GH = 'rmnfpv_admin_gh';
+
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+const gate = document.getElementById('gate');
+const gateTitle = document.getElementById('gateTitle');
+const gateSub = document.getElementById('gateSub');
+const gatePw = document.getElementById('gatePw');
+const gateBtn = document.getElementById('gateBtn');
+const gateStatus = document.getElementById('gateStatus');
+const editorWrap = document.getElementById('editorWrap');
+
+const storedHash = localStorage.getItem(LS_PW_HASH);
+const isFirstRun = !storedHash;
+if (isFirstRun) {
+  gateTitle.textContent = 'Passwort festlegen';
+  gateSub.textContent = 'Erster Besuch auf diesem Gerät — bitte ein Passwort für den Editor vergeben.';
+  gateBtn.textContent = 'Passwort speichern';
+}
+
+function showGateStatus(msg, type){
+  gateStatus.textContent = msg;
+  gateStatus.className = 'status show ' + type;
+}
+
+gateBtn.addEventListener('click', async () => {
+  const val = gatePw.value.trim();
+  if (!val) { showGateStatus('Bitte ein Passwort eingeben.', 'err'); return; }
+  if (isFirstRun) {
+    if (val.length < 4) { showGateStatus('Mindestens 4 Zeichen.', 'err'); return; }
+    localStorage.setItem(LS_PW_HASH, await sha256(val));
+    unlock();
+  } else {
+    const hash = await sha256(val);
+    if (hash === storedHash) { unlock(); }
+    else { showGateStatus('Falsches Passwort.', 'err'); }
+  }
+});
+gatePw.addEventListener('keydown', e => { if (e.key === 'Enter') gateBtn.click(); });
+
+function unlock(){
+  gate.style.display = 'none';
+  editorWrap.style.display = 'block';
+  loadGhSettings();
+}
+
+document.getElementById('logoutBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  location.reload();
+});
+
+/* ============ GITHUB SETTINGS ============ */
+const ghToggle = document.getElementById('ghToggle');
+const ghDetails = document.getElementById('ghDetails');
+ghToggle.addEventListener('click', () => {
+  ghDetails.classList.toggle('show');
+});
+
+function loadGhSettings(){
+  const saved = JSON.parse(localStorage.getItem(LS_GH) || '{}');
+  document.getElementById('ghUser').value = saved.user || '';
+  document.getElementById('ghRepo').value = saved.repo || '';
+  document.getElementById('ghBranch').value = saved.branch || 'main';
+  document.getElementById('ghToken').value = saved.token || '';
+  if (!saved.user || !saved.repo || !saved.token) ghDetails.classList.add('show');
+}
+
+document.getElementById('saveGhBtn').addEventListener('click', () => {
+  const data = {
+    user: document.getElementById('ghUser').value.trim(),
+    repo: document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim() || 'main',
+    token: document.getElementById('ghToken').value.trim()
+  };
+  localStorage.setItem(LS_GH, JSON.stringify(data));
+  const st = document.getElementById('ghStatus');
+  st.textContent = 'Gespeichert.';
+  st.className = 'status show ok';
+  setTimeout(() => st.className = 'status', 2500);
+});
+
+/* ============ SLUG AUTO-GENERATION ============ */
+const titleInput = document.getElementById('postTitle');
+const slugInput = document.getElementById('postSlug');
+let slugManuallyEdited = false;
+slugInput.addEventListener('input', () => { slugManuallyEdited = true; });
+function slugify(str){
+  const map = {'ä':'ae','ö':'oe','ü':'ue','ß':'ss','Ä':'ae','Ö':'oe','Ü':'ue'};
+  return str.replace(/[äöüßÄÖÜ]/g, c => map[c])
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+titleInput.addEventListener('input', () => {
+  if (!slugManuallyEdited) slugInput.value = slugify(titleInput.value);
+});
+document.getElementById('postDate').value = new Date().toISOString().slice(0,10);
+
+/* ============ IMAGE PREVIEW ============ */
+const imgFile = document.getElementById('postImageFile');
+const imgPreview = document.getElementById('imgPreview');
+imgFile.addEventListener('change', () => {
+  if (imgFile.files[0]) {
+    imgPreview.src = URL.createObjectURL(imgFile.files[0]);
+    imgPreview.style.display = 'block';
+  }
+});
+
+/* ============ MINI MARKDOWN → HTML ============ */
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function miniMarkdown(text){
+  const blocks = text.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+  return blocks.map(block => {
+    let inline = escapeHtml(block)
+      .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+      .replace(/\*(.+?)\*/g, '<i>$1</i>');
+    if (block.startsWith('## ')) {
+      return '<h2>' + inline.replace(/^##\s*/, '') + '</h2>';
+    }
+    if (block.startsWith('&gt; ') || block.startsWith('> ')) {
+      return '<blockquote>' + inline.replace(/^(&gt;|>)\s*/, '') + '</blockquote>';
+    }
+    return '<p>' + inline.replace(/\n/g, '<br>') + '</p>';
+  }).join('\n');
+}
+
+/* ============ GITHUB API HELPERS ============ */
+function ghSettings(){
+  return JSON.parse(localStorage.getItem(LS_GH) || '{}');
+}
+async function ghGetFile(path){
+  const s = ghSettings();
+  const res = await fetch(`https://api.github.com/repos/${s.user}/${s.repo}/contents/${path}?ref=${s.branch}`, {
+    headers: { Authorization: `Bearer ${s.token}`, Accept: 'application/vnd.github+json' }
+  });
+  if (res.status === 404) return { sha: null, content: null };
+  if (!res.ok) throw new Error(`GitHub-Fehler beim Lesen von ${path}: ${res.status}`);
+  const data = await res.json();
+  const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+  return { sha: data.sha, content };
+}
+async function ghPutFile(path, contentStr, sha, message){
+  const s = ghSettings();
+  const body = {
+    message,
+    content: btoa(unescape(encodeURIComponent(contentStr))),
+    branch: s.branch
+  };
+  if (sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${s.user}/${s.repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${s.token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`GitHub-Fehler beim Schreiben von ${path}: ${res.status} ${err.message || ''}`);
+  }
+  return res.json();
+}
+async function ghPutBinaryFile(path, base64Content, message){
+  const s = ghSettings();
+  let sha = null;
+  try { const existing = await ghGetFile(path); sha = existing.sha; } catch(e) {}
+  const body = { message, content: base64Content, branch: s.branch };
+  if (sha) body.sha = sha;
+  const res = await fetch(`https://api.github.com/repos/${s.user}/${s.repo}/contents/${path}`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${s.token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`GitHub-Fehler beim Hochladen von ${path}: ${res.status} ${err.message || ''}`);
+  }
+  return res.json();
+}
+function fileToBase64(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ============ PUBLISH ============ */
+const publishBtn = document.getElementById('publishBtn');
+const publishStatus = document.getElementById('publishStatus');
+function showPublishStatus(msg, type){
+  publishStatus.textContent = msg;
+  publishStatus.className = 'status show ' + type;
+}
+
+publishBtn.addEventListener('click', async () => {
+  const s = ghSettings();
+  if (!s.user || !s.repo || !s.token) {
+    showPublishStatus('Bitte zuerst GitHub-Zugangsdaten eintragen und speichern (oben).', 'err');
+    ghDetails.classList.add('show');
+    return;
+  }
+  const title = titleInput.value.trim();
+  const excerpt = document.getElementById('postExcerpt').value.trim();
+  const date = document.getElementById('postDate').value;
+  const slug = slugInput.value.trim();
+  const rawContent = document.getElementById('postContent').value.trim();
+  const imagePath = document.getElementById('postImagePath').value.trim();
+  const imageFile = imgFile.files[0];
+
+  if (!title || !excerpt || !date || !slug || !rawContent) {
+    showPublishStatus('Bitte alle Felder ausfüllen (Titel, Datum, Kurzbeschreibung, Inhalt).', 'err');
+    return;
+  }
+  if (!imagePath && !imageFile) {
+    showPublishStatus('Bitte ein Titelbild hochladen oder einen Bildpfad angeben.', 'err');
+    return;
+  }
+
+  publishBtn.disabled = true;
+  try {
+    showPublishStatus('Veröffentliche …', 'pending');
+
+    let coverPath = imagePath;
+    if (imageFile) {
+      showPublishStatus('Lade Bild hoch …', 'pending');
+      const ext = imageFile.name.split('.').pop();
+      coverPath = `assets/blog/${slug}.${ext}`;
+      const base64 = await fileToBase64(imageFile);
+      await ghPutBinaryFile(coverPath, base64, `Blog-Titelbild: ${title}`);
+    }
+
+    showPublishStatus('Aktualisiere Beitragsliste …', 'pending');
+    const { sha, content } = await ghGetFile('blog/posts.json');
+    let posts = [];
+    try { posts = content ? JSON.parse(content) : []; } catch(e) { posts = []; }
+
+    if (posts.some(p => p.slug === slug)) {
+      showPublishStatus('Ein Beitrag mit diesem Slug existiert bereits. Bitte Slug ändern.', 'err');
+      publishBtn.disabled = false;
+      return;
+    }
+
+    posts.push({
+      slug, title, excerpt, cover: coverPath, date,
+      content: miniMarkdown(rawContent)
+    });
+
+    await ghPutFile('blog/posts.json', JSON.stringify(posts, null, 2), sha, `Neuer Blogbeitrag: ${title}`);
+
+    showPublishStatus('✓ Veröffentlicht! Die Seite aktualisiert sich in etwa einer Minute.', 'ok');
+    titleInput.value = ''; document.getElementById('postExcerpt').value = '';
+    document.getElementById('postContent').value = ''; document.getElementById('postImagePath').value = '';
+    imgFile.value = ''; imgPreview.style.display = 'none';
+    slugInput.value = ''; slugManuallyEdited = false;
+    document.getElementById('postDate').value = new Date().toISOString().slice(0,10);
+  } catch (err) {
+    showPublishStatus('Fehler: ' + err.message, 'err');
+  } finally {
+    publishBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

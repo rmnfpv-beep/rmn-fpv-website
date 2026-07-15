@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.rmnfpv.com/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/index-en.html"/>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/index-en.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/index-en.html"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/drones.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/drones.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/drones-en.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/drones-en.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/drones.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/drones-en.html"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/bio.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/bio.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/bio-en.html"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/bio-en.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/bio.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/bio-en.html"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/blog.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/blog-en.html"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/blog-en.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.rmnfpv.com/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rmnfpv.com/blog-en.html"/>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/impressum.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/impressum-en.html</loc>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/datenschutz.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.rmnfpv.com/datenschutz-en.html</loc>
+    <priority>0.2</priority>
+  </url>
+</urlset>
